@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>윤석열 대통령 디지털 아카이브 (비공식)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B33; --navy2:#132748; --navy3:#08132A; --blue:#1F4A8A; --blue2:#2A5DA8;
+  --line:#2A3D5E; --gray:#8E99AD; --mist:#E9EDF3; --paper:#F5F7FA; --ink:#0D1B33; --ink2:#3E4E6A;
+  --brass:#B59A5B; --card:#FFFFFF; --rule:#DDE3EC; --red:#A93A3A;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--paper:#0F1A2E;--card:#14223B;--ink:#E9EDF3;--ink2:#B6C0D2;--rule:#26385A;--mist:#1A2A47}
+}
+:root[data-theme="dark"]{--paper:#0F1A2E;--card:#14223B;--ink:#E9EDF3;--ink2:#B6C0D2;--rule:#26385A;--mist:#1A2A47}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 110px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;line-height:1.75;word-break:keep-all;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+button{font:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.serif{font-family:'Noto Serif KR',serif}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* utility bar */
+.util{background:var(--navy3);color:var(--gray);font-size:13px}
+.util .wrap{display:flex;justify-content:space-between;gap:12px;height:36px;align-items:center}
+.util a{text-decoration:none;color:var(--gray)}
+.util a:hover{color:#fff}
+.util-notice{color:#C9B27E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--navy);border-bottom:1px solid var(--line)}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:74px}
+.logo{display:flex;align-items:center;gap:14px;color:#fff;text-decoration:none}
+.seal{width:44px;height:44px;border:1px solid var(--brass);display:grid;place-items:center;color:var(--brass);font-family:'Noto Serif KR',serif;font-weight:900;font-size:19px;position:relative}
+.seal::after{content:'';position:absolute;inset:3px;border:1px solid rgba(181,154,91,.4)}
+.logo-t{display:flex;flex-direction:column;line-height:1.25}
+.logo-t b{font-family:'Noto Serif KR',serif;font-size:19px;font-weight:700}
+.logo-t small{font-size:12px;color:var(--gray);letter-spacing:.02em}
+nav.gnb{display:flex}
+nav.gnb a{color:var(--mist);text-decoration:none;padding:26px 18px;font-size:16px;font-weight:500;position:relative;transition:color .2s}
+:root[data-theme="dark"] nav.gnb a, nav.gnb a{color:#E9EDF3}
+nav.gnb a::after{content:'';position:absolute;left:18px;right:18px;bottom:0;height:3px;background:var(--brass);transform:scaleX(0);transition:transform .25s}
+nav.gnb a:hover{color:#fff}nav.gnb a:hover::after{transform:scaleX(1)}
+.burger{display:none;background:none;border:0;padding:10px}
+.burger span{display:block;width:24px;height:2px;background:#fff;margin:5px 0}
+
+/* hero */
+.hero{position:relative;min-height:640px;display:flex;align-items:flex-end;background:linear-gradient(160deg,var(--navy2),var(--blue) 60%,var(--navy));overflow:hidden;color:#fff}
+.hero .slot{position:absolute;inset:0}
+.hero .slot img{width:100%;height:100%;object-fit:cover}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,19,42,.15) 0%,rgba(8,19,42,.55) 45%,rgba(8,19,42,.94) 100%)}
+.hero-in{position:relative;width:100%;padding-bottom:64px}
+.hero-kicker{display:flex;gap:14px;align-items:center;color:#D8C38F;font-size:15px;margin-bottom:20px}
+.hero-kicker i{display:block;width:40px;height:1px;background:#D8C38F}
+.hero h1{font-family:'Noto Serif KR',serif;font-weight:900;font-size:clamp(34px,5.8vw,66px);line-height:1.22;margin:0;text-shadow:0 2px 28px rgba(0,0,0,.4)}
+.hero p.lead{font-size:18px;color:#D9E0EC;max-width:600px;margin:22px 0 0}
+.hero .credit{position:absolute;right:24px;bottom:14px;font-size:11px;color:rgba(255,255,255,.55)}
+
+/* quick menu (기념관식) */
+.quick{background:var(--card);border-bottom:1px solid var(--rule)}
+.quick .wrap{display:grid;grid-template-columns:repeat(5,1fr)}
+.quick a{display:flex;flex-direction:column;align-items:center;gap:8px;padding:28px 8px;text-decoration:none;color:var(--ink);border-right:1px solid var(--rule);transition:background .2s,color .2s}
+.quick a:first-child{border-left:1px solid var(--rule)}
+.quick a:hover{background:var(--navy);color:#fff}
+.quick svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:1.4}
+.quick b{font-size:16px;font-weight:500}
+.quick small{font-size:13px;color:var(--gray)}
+
+/* section heads */
+section{padding:96px 0}
+.sh{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:44px;border-bottom:1px solid var(--rule);padding-bottom:22px}
+.sh h2{font-family:'Noto Serif KR',serif;font-size:clamp(28px,3.4vw,40px);font-weight:900;margin:0;line-height:1.3}
+.sh p{margin:6px 0 0;color:var(--ink2);font-size:17px;max-width:62ch}
+.room-no{font-family:'Noto Serif KR',serif;color:var(--brass);font-size:16px;font-weight:700;display:block;margin-bottom:6px}
+
+/* intro */
+.intro{background:var(--card)}
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+.intro-grid p{font-size:18px;color:var(--ink2);margin:0 0 16px}
+.facts{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--ink)}
+.facts div{padding:18px 4px;border-bottom:1px solid var(--rule)}
+.facts dt{font-size:14px;color:var(--gray)}
+.facts dd{margin:2px 0 0;font-size:17px;font-weight:500}
+
+/* image slots */
+.slot{position:relative;background:linear-gradient(150deg,var(--navy2),var(--blue));overflow:hidden}
+.slot img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
+.slot .ph{position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.55);font-family:'Noto Serif KR',serif;font-size:19px;text-align:center;padding:16px}
+.slot.has-img .ph{display:none}
+.cap{font-size:12px;color:var(--gray);margin-top:8px}
+
+/* room layout */
+.room-grid{display:grid;grid-template-columns:5fr 7fr;gap:64px;align-items:start}
+.room-media{position:sticky;top:120px}
+.room-media .slot{aspect-ratio:4/5}
+.room-alt{background:var(--mist)}
+:root[data-theme="dark"] .room-alt{background:var(--mist)}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--rule)}
+.tl li{display:grid;grid-template-columns:96px 1fr;gap:18px;padding:16px 0 16px 24px;position:relative;transition:background .2s}
+.tl li::before{content:'';position:absolute;left:-7px;top:25px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--blue)}
+.tl li.dark::before{border-color:var(--red);background:var(--red)}
+.tl li:hover{background:rgba(31,74,138,.05)}
+.tl time{font-family:'Noto Serif KR',serif;font-weight:700;color:var(--blue);font-size:16px}
+.tl li.dark time{color:var(--red)}
+:root[data-theme="dark"] .tl time{color:#8FB0E3}
+.tl b{font-size:17px}
+.tl p{margin:3px 0 0;color:var(--ink2);font-size:15px}
+.era{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:700;margin:36px 0 10px;padding-left:12px;border-left:4px solid var(--brass)}
+.era:first-child{margin-top:0}
+
+/* policy */
+.pol{display:grid;gap:2px}
+.pol article{background:var(--card);padding:22px 26px;border-left:3px solid transparent;transition:border-color .2s,transform .2s}
+.pol article:hover{border-left-color:var(--blue);transform:translateX(4px)}
+.tag{display:inline-block;font-size:13px;color:var(--blue);border:1px solid var(--rule);padding:0 10px;margin-bottom:6px}
+:root[data-theme="dark"] .tag{color:#8FB0E3}
+.pol h3{margin:0;font-size:19px}
+.pol p{margin:6px 0 0;color:var(--ink2);font-size:15px}
+
+/* evaluation */
+.eval{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.ev{background:var(--card);border-top:3px solid var(--navy);padding:26px}
+:root[data-theme="dark"] .ev{border-top-color:var(--brass)}
+.ev h3{margin:0 0 14px;font-size:19px;font-family:'Noto Serif KR',serif}
+.ev .side{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--rule);font-size:15px;color:var(--ink2)}
+.ev .side b{font-size:14px;color:var(--ink)}
+.notice{margin-top:28px;padding:18px 22px;background:var(--card);border-left:4px solid var(--brass);color:var(--ink2);font-size:15px}
+
+/* records */
+.records{background:var(--navy);color:#fff}
+.records .sh{border-color:var(--line)}
+.records .sh p{color:var(--gray)}
+.rec-list{border-top:2px solid var(--brass)}
+.rec{display:grid;grid-template-columns:160px 1fr;gap:28px;padding:26px 0;border-bottom:1px solid var(--line)}
+.rec time{font-family:'Noto Serif KR',serif;color:#D8C38F;font-size:17px;font-weight:700}
+.rec h3{margin:0;font-size:19px}
+.rec p{margin:6px 0 0;color:#C3CCDB;font-size:15px}
+.rec .st{display:inline-block;margin-top:10px;font-size:13px;border:1px solid var(--line);padding:2px 10px;color:var(--mist)}
+
+/* room3 */
+.say-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.say{margin:0;background:var(--card);padding:26px;border-top:3px solid var(--brass)}
+.say p{margin:0;font-family:'Noto Serif KR',serif;font-size:17px;line-height:1.85}
+.say cite{display:block;margin-top:14px;font-style:normal;font-weight:700;font-size:14px}
+.say cite span{display:block;font-weight:400;color:var(--gray)}
+.room3-top{display:grid;grid-template-columns:5fr 7fr;gap:48px;margin-bottom:40px;align-items:center}
+.room3-top .slot{aspect-ratio:4/3}
+.room3-top p{font-size:17px;color:var(--ink2)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+.tile{display:flex;flex-direction:column;gap:6px;padding:24px;background:var(--navy);color:#fff;text-decoration:none;transition:background .25s,transform .25s}
+.tile:hover{background:var(--blue);transform:translateY(-3px)}
+.tile b{font-size:17px}.tile span{font-size:14px;color:#C3CCDB}
+
+/* search */
+.search{background:var(--navy3);color:#fff}
+.search .sh{border-color:var(--line)}.search .sh p{color:var(--gray)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chips button{background:transparent;border:1px solid var(--line);color:#E9EDF3;padding:6px 16px;transition:all .2s}
+.chips button:hover{border-color:var(--gray)}
+.chips button[aria-pressed="true"]{background:#fff;color:var(--navy);border-color:#fff}
+.sbar{display:flex;max-width:820px;border:1px solid var(--line);background:var(--navy2)}
+.sbar input{flex:1;min-width:0;background:transparent;border:0;color:#fff;padding:18px 20px;font-size:17px;font-family:inherit}
+.sbar input::placeholder{color:var(--gray)}
+.sbar button{background:var(--blue);color:#fff;border:0;padding:0 34px;font-weight:700}
+.sbar button:hover{background:var(--blue2)}
+.results{max-width:820px;margin-top:24px}
+.results .cnt{color:var(--gray);font-size:15px}
+.r{padding:16px 0;border-bottom:1px solid var(--line)}
+.r span{font-size:13px;color:#D8C38F;margin-right:10px}
+.r b{font-size:17px}.r p{margin:4px 0 0;color:#C3CCDB;font-size:15px}
+
+/* board */
+.board{background:var(--paper)}
+.form{background:var(--navy);color:#fff;padding:30px;display:grid;gap:16px}
+.form .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form label{display:grid;gap:6px}
+.form label span{font-size:14px;color:#C3CCDB}
+.form input,.form textarea{background:var(--navy2);border:1px solid var(--line);color:#fff;padding:12px 14px;font:inherit;font-size:16px;resize:vertical}
+.form input:focus,.form textarea:focus{border-color:var(--gray);outline:none}
+.form .foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.err{color:#F2A3A3;font-size:14px;flex:1;min-width:160px}
+.len{color:var(--gray);font-size:14px}
+.btn{background:#fff;color:var(--navy);border:0;padding:12px 34px;font-weight:700}
+.btn:hover{background:#E9EDF3}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.sm{padding:8px 16px;font-size:14px}
+.btn-line{background:transparent;border:1px solid var(--rule);color:var(--ink);padding:8px 16px;font-size:14px}
+.board-state{font-size:14px;color:var(--gray);margin:0 0 14px}
+.posts{margin-top:28px;background:var(--card);border-top:2px solid var(--ink)}
+.posts-head{display:flex;justify-content:space-between;padding:14px 24px;font-size:14px;color:var(--gray);border-bottom:1px solid var(--rule)}
+.post{padding:20px 24px;border-bottom:1px solid var(--rule)}
+.post:hover{background:rgba(31,74,138,.03)}
+.meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.meta .no{color:var(--gray);font-size:14px;min-width:28px}
+.meta time{color:var(--gray);font-size:14px}
+.del{margin-left:auto;background:none;border:1px solid var(--rule);color:var(--ink2);padding:4px 12px;font-size:13px;transition:all .2s}
+.del:hover{border-color:var(--red);color:var(--red)}
+.body{margin:10px 0 0 42px;white-space:pre-wrap}
+.delbox{display:flex;gap:8px;align-items:center;margin:12px 0 0 42px;flex-wrap:wrap}
+.delbox input{border:1px solid var(--rule);background:var(--card);color:var(--ink);padding:8px 12px;font:inherit;font-size:14px}
+.empty{padding:32px 24px;color:var(--gray);margin:0}
+.more{display:block;width:100%;background:none;border:0;padding:16px;color:var(--blue);font-weight:500}
+
+/* sources & footer */
+.sources{background:var(--card)}
+.src-list{columns:2;column-gap:48px;padding:0;margin:0;list-style:none}
+.src-list li{break-inside:avoid;padding:10px 0;border-bottom:1px solid var(--rule);font-size:15px}
+.src-list a{color:var(--blue);text-decoration:none}
+:root[data-theme="dark"] .src-list a{color:#8FB0E3}
+.src-list a:hover{text-decoration:underline}
+.src-list small{display:block;color:var(--gray);font-size:13px}
+footer{background:var(--navy3);color:#C3CCDB;padding:60px 0 36px}
+.disc{font-size:19px;line-height:1.85;color:#fff;margin:0;padding:28px 32px;border:1px solid var(--line);border-left:5px solid var(--brass)}
+.fbot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:28px;font-size:14px;color:var(--gray)}
+
+@media (max-width:960px){
+  nav.gnb{display:none;position:absolute;top:74px;left:0;right:0;background:var(--navy);flex-direction:column;padding:6px 16px 16px;border-bottom:1px solid var(--line)}
+  nav.gnb.open{display:flex}
+  nav.gnb a{padding:14px 8px}
+  nav.gnb a::after{display:none}
+  .burger{display:block}
+  .intro-grid,.room-grid,.room3-top,.eval{grid-template-columns:1fr;gap:36px}
+  .room-media{position:static}
+  .room-media .slot{aspect-ratio:4/3}
+  .say-grid{grid-template-columns:1fr}
+  .tiles{grid-template-columns:1fr 1fr}
+  .quick .wrap{grid-template-columns:repeat(5,1fr);padding:0}
+  .quick small{display:none}
+  section{padding:68px 0}
+  .src-list{columns:1}
+}
+@media (max-width:600px){
+  .util-notice{display:none}
+  .logo-t b{font-size:16px}.logo-t small{display:none}
+  .hero{min-height:540px}
+  .quick a{padding:18px 4px}.quick b{font-size:13px}.quick svg{width:24px;height:24px}
+  .form .row,.tiles{grid-template-columns:1fr}
+  .tl li{grid-template-columns:1fr;gap:2px}
+  .rec{grid-template-columns:1fr;gap:6px}
+  .body,.delbox{margin-left:0}
+  .disc{font-size:16px;padding:22px}
+  .sh{flex-direction:column;align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="util"><div class="wrap">
+  <span class="util-notice">본 사이트는 정부·공식 기관이 아닌 개인 연구용 비공식 아카이브입니다.</span>
+  <span><a href="#sources">자료 출처</a></span>
+</div></div>
+
+<header>
+  <div class="wrap hdr">
+    <a class="logo" href="#top">
+      <span class="seal">錄</span>
+      <span class="logo-t"><b>윤석열 대통령 디지털 아카이브</b><small>Digital Archive of the 20th President · 비공식</small></span>
+    </a>
+    <nav class="gnb" id="gnb">
+      <a href="#intro">소개</a>
+      <a href="#room1">제1전시실</a>
+      <a href="#room2">제2전시실</a>
+      <a href="#archive">아카이브</a>
+      <a href="#board">참여마당</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero" style="padding:0">
+  <div class="slot" data-slot="hero">
+    <img alt="제20대 대통령 취임식 전경 (2022년 5월 10일, 국회의사당)">
+    <div class="ph"></div>
+  </div>
+  <div class="hero-shade"></div>
+  <div class="wrap hero-in">
+    <div class="hero-kicker"><i></i>2022. 5. 10. 제20대 대통령 취임식 · 국회의사당</div>
+    <h1>다시 도약하는 대한민국,<br>함께 잘 사는 국민의 나라</h1>
+    <p class="lead">윤석열 정부가 출범하며 내건 국정비전입니다. 이 아카이브는 생애, 재임 기간의 정책과 그에 대한 평가, 비상계엄 이후의 공식 기록까지 출처와 함께 보존합니다.</p>
+  </div>
+  <span class="credit" id="hero-credit"></span>
+</section>
+
+<nav class="quick" aria-label="바로가기">
+  <div class="wrap">
+    <a href="#room1"><svg viewBox="0 0 32 32"><path d="M4 28h24M6 28V13M26 28V13M11 28V13M16 28V13M21 28V13M3 12l13-8 13 8z"/></svg><b>제1전시실</b><small>정의와 역경의 발자취</small></a>
+    <a href="#room2"><svg viewBox="0 0 32 32"><path d="M4 26l8-8 6 5 10-12M20 11h8v8"/></svg><b>제2전시실</b><small>도약하는 대한민국</small></a>
+    <a href="#records"><svg viewBox="0 0 32 32"><rect x="6" y="4" width="20" height="24"/><path d="M10 10h12M10 15h12M10 20h8"/></svg><b>기록관</b><small>2024~현재 공식 기록</small></a>
+    <a href="#room3"><svg viewBox="0 0 32 32"><rect x="4" y="7" width="24" height="17"/><path d="M14 12l6 3.5-6 3.5z"/></svg><b>제3전시실</b><small>국민과 함께</small></a>
+    <a href="#board"><svg viewBox="0 0 32 32"><path d="M5 6h22v16H14l-6 5v-5H5z"/></svg><b>참여마당</b><small>방명록 남기기</small></a>
+  </div>
+</nav>
+
+<section class="intro" id="intro">
+  <div class="wrap">
+    <div class="sh"><div><h2>아카이브 소개</h2><p>기념관의 전시 구성을 빌려, 한 대통령의 생애와 재임기를 사료 중심으로 정리했습니다.</p></div></div>
+    <div class="intro-grid">
+      <div>
+        <p>제1전시실은 출생부터 대통령 당선까지의 생애를, 제2전시실은 재임 중 정부가 추진한 주요 정책과 그에 대한 엇갈린 평가를 다룹니다. 기록관에는 2024년 12월 비상계엄 선포 이후 탄핵·파면과 형사재판 등 확정되었거나 진행 중인 공식 절차를 날짜순으로 보존합니다.</p>
+        <p>업적과 논란을 함께 기록하는 것을 원칙으로 합니다. 진행 중인 재판은 확정되지 않은 사실임을 표시하며, 모든 항목은 하단 자료 출처에서 원문을 확인할 수 있습니다.</p>
+      </div>
+      <dl class="facts">
+        <div><dt>대수</dt><dd>대한민국 제20대 대통령</dd></div>
+        <div><dt>재임</dt><dd>2022. 5. 10. ~ 2025. 4. 4.</dd></div>
+        <div><dt>출생</dt><dd>1960. 12. 18. 서울</dd></div>
+        <div><dt>학력</dt><dd>서울대학교 법과대학</dd></div>
+        <div><dt>주요 경력</dt><dd>제43대 검찰총장</dd></div>
+        <div><dt>퇴임 사유</dt><dd>헌법재판소 파면 결정</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="room1">
+  <div class="wrap room-grid">
+    <div class="room-media">
+      <div class="slot" data-slot="room1">
+        <img alt="윤석열 대통령 공식 초상">
+        <div class="ph">대통령 공식 초상</div>
+      </div>
+      <p class="cap" id="room1-credit"></p>
+    </div>
+    <div>
+      <div class="sh" style="display:block"><span class="room-no">제1전시실</span><h2>정의와 역경의 발자취</h2><p>아홉 번의 도전 끝에 합격한 사법시험, 좌천과 복귀를 거친 검사 생활, 그리고 대통령 당선까지.</p></div>
+      <h3 class="era">성장과 사법시험</h3>
+      <ol class="tl" id="tl-life"></ol>
+      <h3 class="era">검사 27년</h3>
+      <ol class="tl" id="tl-prosecutor"></ol>
+      <h3 class="era">정치 입문과 당선</h3>
+      <ol class="tl" id="tl-politics"></ol>
+    </div>
+  </div>
+</section>
+
+<section id="room2" class="room-alt">
+  <div class="wrap">
+    <div class="room-grid">
+      <div class="room-media">
+        <div class="slot" data-slot="room2">
+          <img alt="한미 정상회담">
+          <div class="ph">한미 정상회담</div>
+        </div>
+        <p class="cap" id="room2-credit"></p>
+      </div>
+      <div>
+        <div class="sh" style="display:block"><span class="room-no">제2전시실</span><h2>도약하는 대한민국</h2><p>재임 기간 정부가 추진한 외교·안보, 에너지, 과학기술, 사회 분야의 주요 정책입니다.</p></div>
+        <div class="pol" id="policies"></div>
+      </div>
+    </div>
+
+    <div class="sh" style="margin-top:88px"><div><h2 class="serif">재임기 정책을 둘러싼 평가</h2><p>같은 정책이라도 평가는 엇갈립니다. 대표적인 쟁점별로 지지하는 쪽과 비판하는 쪽의 논거를 나란히 소개합니다.</p></div></div>
+    <div class="eval" id="evals"></div>
+    <p class="notice">평가 항목은 언론 보도와 공개 토론에서 제기된 대표 논거를 요약한 것이며, 아카이브 운영자의 입장이 아닙니다.</p>
+  </div>
+</section>
+
+<section id="records" class="records">
+  <div class="wrap">
+    <div class="sh"><div><span class="room-no">기록관</span><h2>2024년 12월 이후의 기록</h2><p>비상계엄 선포부터 현재까지 국회·헌법재판소·법원 등 공식 절차를 날짜순으로 기록합니다.</p></div></div>
+    <div class="rec-list" id="rec-list"></div>
+  </div>
+</section>
+
+<section id="room3">
+  <div class="wrap">
+    <div class="room3-top">
+      <div>
+        <div class="slot" data-slot="room3">
+          <img alt="검찰총장 임명장 수여">
+          <div class="ph">검찰총장 임명장 수여 (2019)</div>
+        </div>
+        <p class="cap" id="room3-credit"></p>
+      </div>
+      <div>
+        <span class="room-no">제3전시실</span>
+        <h2 class="serif" style="font-size:clamp(28px,3.4vw,40px);margin:0 0 12px;font-weight:900">국민과 함께</h2>
+        <p>주요 연설과 발언을 요약해 소개하고, 원문과 영상을 볼 수 있는 공공 기록관으로 안내합니다. 발언 원문은 각 기관에서 확인해 주세요.</p>
+      </div>
+    </div>
+    <div class="say-grid" id="sayings"></div>
+    <div class="tiles" id="tiles"></div>
+  </div>
+</section>
+
+<section id="archive" class="search">
+  <div class="wrap">
+    <div class="sh"><div><h2>아카이브 검색</h2><p>전시 기록 전체에서 키워드로 찾아보세요.</p></div></div>
+    <div class="chips" id="chips"></div>
+    <form class="sbar" id="sform" role="search">
+      <input id="q" placeholder="예: 검찰총장, 원전, 파면, 의대" aria-label="검색어">
+      <button type="submit">검색</button>
+    </form>
+    <div class="results" id="results" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="board" class="board">
+  <div class="wrap">
+    <div class="sh"><div><h2>참여마당</h2><p>의견과 방명록을 남겨주세요. 삭제할 때 작성 시 입력한 비밀번호가 필요합니다.</p></div></div>
+    <p class="board-state" id="board-state">게시판을 불러오는 중입니다.</p>
+    <div class="form" id="form">
+      <div class="row">
+        <label><span>작성자</span><input id="f-name" maxlength="20" autocomplete="nickname"></label>
+        <label><span>비밀번호 (4자 이상)</span><input id="f-pw" type="password" maxlength="30" autocomplete="new-password"></label>
+      </div>
+      <input id="f-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+      <label><span>내용</span><textarea id="f-body" rows="4" maxlength="500"></textarea></label>
+      <div class="foot">
+        <span class="err" id="f-err" role="alert"></span>
+        <span class="len" id="f-len">0/500</span>
+        <button class="btn" id="f-submit" type="button">등록</button>
+      </div>
+    </div>
+    <div class="posts">
+      <div class="posts-head"><span id="p-count">전체 0건</span><span>최신순</span></div>
+      <div id="p-list"><p class="empty">아직 등록된 글이 없습니다. 첫 의견을 남겨보세요.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="sources" class="sources">
+  <div class="wrap">
+    <div class="sh"><div><h2>자료 출처</h2><p>전시 내용의 근거가 되는 공공 기관과 원문 자료입니다.</p></div></div>
+    <ul class="src-list" id="src-list"></ul>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disc">본 사이트는 대한민국 정부나 공식 기관이 아니며, 개인이 연구 및 기록 보존 목적으로 운영하는 비공식 디지털 아카이브입니다. 본 사이트에 사용된 사료는 공공저작물 자유이용 허락 지침을 준수합니다.</p>
+    <div class="fbot"><span>윤석열 대통령 디지털 아카이브 (비공식) · 기록 기준일 2026. 10. 3.</span><span>© Personal Research Archive</span></div>
+  </div>
+</footer>
+
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
+
+/* ───── 이미지: 위키미디어 공용 원본 (claude.ai 게시 페이지에서는 외부 이미지가 차단되어 직접 등록이 필요) ───── */
+const WIKI={
+  hero:{src:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/KOREA_The_20th_President_Inauguration_Ceremony_571_%2852062297122%29.jpg/1600px-KOREA_The_20th_President_Inauguration_Ceremony_571_%2852062297122%29.jpg",
+        credit:"사진: 국방홍보원 양동욱 / 대한민국 정부 (Wikimedia Commons)"},
+  room1:{src:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/South_Korea_President_Yoon_Suk_Yeol_portrait.jpg/800px-South_Korea_President_Yoon_Suk_Yeol_portrait.jpg",
+        credit:"사진: 대통령 공식 초상 (Wikimedia Commons)"},
+  room2:{src:"",credit:""},
+  room3:{src:"",credit:""}
+};
+
+/* ───── 콘텐츠 ───── */
+const LIFE=[
+ ["1960. 12.","서울 출생","서울에서 태어났습니다. 부친은 연세대학교 응용통계학과 명예교수를 지낸 윤기중."],
+ ["1979","서울대학교 법과대학 입학","충암고등학교를 졸업했습니다."],
+ ["1991","제33회 사법시험 합격","대학 4학년 때 1차 합격 이후 여러 차례 2차에서 고배를 마신 끝에 합격해 '9수'로 알려졌습니다."]
+];
+const PROSECUTOR=[
+ ["1994","대구지방검찰청 검사 임관","사법연수원 23기 수료 후 검사 생활을 시작했습니다."],
+ ["2013","국정원 댓글 사건 특별수사팀장","수사 과정에서 지휘부와 갈등을 빚고 직무에서 배제되었습니다. 국정감사에서 '사람에 충성하지 않는다'는 발언으로 주목받았습니다."],
+ ["2014","지방 고검 전보","대구고검·대전고검 검사로 전보되며 사실상 좌천 생활을 했습니다."],
+ ["2016. 12.","박영수 특별검사팀 수사팀장","국정농단 사건 수사를 이끌었습니다."],
+ ["2017. 5.","서울중앙지방검찰청 검사장","고검 검사에서 검사장으로 직행 발탁되었습니다."],
+ ["2019. 7.","제43대 검찰총장 취임","문재인 대통령으로부터 임명장을 받았습니다."],
+ ["2020","법무부와의 갈등","추미애 법무부 장관의 징계 청구와 직무배제 명령에 맞서 법원 결정으로 직무에 복귀했습니다."]
+];
+const POLITICS=[
+ ["2021. 3. 4.","검찰총장 사퇴","임기를 4개월여 남기고 사직했습니다."],
+ ["2021. 6. 29.","대선 출마 선언","같은 해 7월 국민의힘에 입당했습니다."],
+ ["2021. 11. 5.","국민의힘 대통령 후보 선출","당내 경선에서 승리했습니다."],
+ ["2022. 3. 9.","제20대 대통령 당선","이재명 후보와 0.73%p 차이로 당선되었습니다. 역대 최소 득표차입니다."],
+ ["2022. 5. 10.","제20대 대통령 취임","대통령 집무실을 용산으로 이전하고 업무를 시작했습니다."]
+];
+const POLICIES=[
+ ["국정기조","공정과 상식","정부 출범 당시 국정운영의 기본 원칙으로 내세운 가치입니다. 취임사에서는 자유·인권·공정·연대를 핵심 가치로 제시했습니다."],
+ ["외교·안보","워싱턴 선언","2023년 4월 미국 국빈 방문 중 한미 핵협의그룹(NCG) 신설 등 확장억제 강화를 담은 선언을 발표했습니다."],
+ ["외교·안보","캠프데이비드 한미일 정상회의","2023년 8월 18일, 3국 정상이 안보·경제 협력을 정례화하는 '캠프데이비드 정신'에 합의했습니다."],
+ ["외교","한일관계 개선과 셔틀외교 복원","2023년 3월 강제징용 배상 해법(제3자 변제)을 발표하고 한일 정상 간 셔틀외교를 재개했습니다."],
+ ["에너지","원전 생태계 복원","이전 정부의 탈원전 정책을 폐기하고 신한울 3·4호기 건설을 재개했습니다. 2024년 7월 체코 신규 원전 사업 우선협상대상자로 선정되었습니다."],
+ ["과학기술","우주항공청 개청","2024년 5월 우주항공 분야 전담 기관을 경남 사천에 출범시켰습니다."],
+ ["사회","의대 정원 증원","2024년 2월 의대 정원 2,000명 증원을 발표했습니다. 이후 전공의 집단 사직으로 의료 공백이 장기화되었습니다."],
+ ["재정","건전재정 기조","국가채무 관리를 위해 지출 증가를 억제하는 재정 운용 원칙을 유지했습니다."]
+];
+const EVALS=[
+ ["한일관계 해법","한미일 협력의 기반을 복원하고 수출규제 해제 등 실질적 관계 정상화를 이끌었다고 봅니다.","피해자 동의 없이 일본 기업의 배상 참여 없는 해법을 택해 역사 문제에서 일방적으로 양보했다고 봅니다."],
+ ["원전 정책","에너지 안보와 탄소중립에 기여하고 원전 수출 기반을 되살렸다고 평가합니다.","사용후핵연료 처리 대책이 미흡하고 재생에너지 전환이 늦어졌다고 지적합니다."],
+ ["의대 증원","지역·필수의료 의사 부족에 대응하기 위한 불가피한 개혁이었다고 봅니다.","의료계와의 협의 없이 규모를 정해 장기간 의료 공백을 불렀다고 봅니다."],
+ ["건전재정","미래 세대의 부담을 줄이고 재정 신뢰도를 지켰다고 평가합니다.","대규모 세수결손과 경기 대응 부족으로 민생 부담이 커졌다고 지적합니다."]
+];
+const RECORDS=[
+ ["2022. 10. 29.","이태원 참사","서울 용산구 이태원에서 핼러윈 인파 밀집 사고로 159명이 숨졌습니다. 정부의 재난 대응 책임을 두고 논란이 이어졌습니다.","재임 중 주요 사건"],
+ ["2024. 4. 10.","제22대 국회의원 선거","야당이 과반 의석을 확보하며 여소야대 구도가 이어졌습니다.","재임 중 주요 사건"],
+ ["2024. 12. 3.","비상계엄 선포","밤 10시 27분경 비상계엄을 선포했습니다. 국회가 12월 4일 새벽 해제 요구안을 가결했고, 약 6시간 만에 해제되었습니다.","공식 기록"],
+ ["2024. 12. 14.","국회 탄핵소추안 가결","두 번째 표결에서 탄핵소추안이 가결되어 대통령 직무가 정지되었습니다.","공식 기록"],
+ ["2025. 1. 15.","체포 및 구속","현직 대통령으로는 처음 체포되었고, 1월 26일 내란 우두머리 혐의로 구속기소되었습니다.","공식 기록"],
+ ["2025. 3. 8.","구속취소로 석방","법원의 구속취소 결정으로 석방되었습니다.","공식 기록"],
+ ["2025. 4. 4.","헌법재판소 파면 결정","재판관 8명 전원일치로 탄핵을 인용해 대통령직에서 파면되었습니다.","확정"],
+ ["2025. 6. 3.","제21대 대통령 선거","파면에 따른 조기 대선이 치러졌습니다.","공식 기록"],
+ ["2025. 7.","재구속","내란 특별검사의 청구로 다시 구속되었습니다.","공식 기록"],
+ ["2026. 2. 19.","내란 우두머리 혐의 1심 무기징역","서울중앙지방법원이 국회에 군 병력을 투입하는 등 헌법기관의 기능을 마비시키려 했다고 판단해 무기징역을 선고했습니다. 특검과 피고인 양측이 모두 항소했습니다.","미확정"],
+ ["2026. 10. 현재","항소심 진행 중","서울고등법원 내란전담재판부(형사12-1부)에서 항소심이 진행 중이며, 피고인 측은 1심 판단을 다투고 있습니다.","진행 중"]
+];
+const SAYINGS=[
+ ["제20대 대통령 취임사","2022. 5. 10.","16분 연설에서 '자유'를 30여 차례 언급하며, 자유·인권·공정·연대를 국정의 핵심 가치로 제시했습니다."],
+ ["2013년 서울고검 국정감사","2013. 10. 21.","국정원 댓글 수사 외압을 증언하며 '사람에 충성하지 않는다'는 발언으로 널리 알려졌습니다."],
+ ["미국 의회 상·하원 합동연설","2023. 4. 27.","한미동맹 70주년을 맞아 영어로 연설하며 '자유의 동맹'을 강조했습니다."]
+];
+const TILES=[
+ ["대통령기록관","역대 대통령 연설문·기록물 원문","https://www.pa.go.kr"],
+ ["국가기록원","국가 주요 기록물 검색","https://www.archives.go.kr"],
+ ["KTV 국민방송","공식 행사 영상 아카이브","https://www.ktv.go.kr"],
+ ["헌법재판소","탄핵심판 결정문 원문","https://www.ccourt.go.kr"]
+];
+const SOURCES=[
+ ["대통령기록관","제20대 대통령 연설문 및 기록물","https://www.pa.go.kr"],
+ ["헌법재판소","2024헌나8 대통령(윤석열) 탄핵 사건 결정","https://www.ccourt.go.kr"],
+ ["대한민국 법원","판결서 인터넷 열람","https://www.scourt.go.kr"],
+ ["대한민국 정책브리핑","재임기 정책 보도자료","https://www.korea.kr"],
+ ["국가기록원","국가 기록물 검색","https://www.archives.go.kr"],
+ ["KTV 국민방송","공식 행사 영상","https://www.ktv.go.kr"],
+ ["Wikimedia Commons","사진 원본 및 라이선스 정보","https://commons.wikimedia.org/wiki/Category:Yoon_Suk_Yeol"],
+ ["노컷뉴스","내란 우두머리 사건 항소심 개시 보도 (2026. 4. 27.)","https://www.nocutnews.co.kr/news/6508880"]
+];
+
+/* ───── 렌더링 ───── */
+function fillTL(id,rows,darkFrom){
+  const ol=$(id);
+  rows.forEach(r=>{const li=el("li");const t=el("time",null,r[0]);const d=el("div");d.append(el("b",null,r[1]),el("p",null,r[2]));li.append(t,d);ol.append(li);});
+}
+fillTL("#tl-life",LIFE);fillTL("#tl-prosecutor",PROSECUTOR);fillTL("#tl-politics",POLITICS);
+
+POLICIES.forEach(p=>{const a=el("article");a.append(el("span","tag",p[0]),el("h3",null,p[1]),el("p",null,p[2]));$("#policies").append(a);});
+EVALS.forEach(e=>{const d=el("div","ev");d.append(el("h3",null,e[0]));
+  [["지지",e[1]],["비판",e[2]]].forEach(s=>{const r=el("div","side");r.append(el("b",null,s[0]),el("span",null,s[1]));d.append(r);});
+  $("#evals").append(d);});
+RECORDS.forEach(r=>{const d=el("div","rec");const b=el("div");b.append(el("h3",null,r[1]),el("p",null,r[2]),el("span","st",r[3]));d.append(el("time",null,r[0]),b);$("#rec-list").append(d);});
+SAYINGS.forEach(s=>{const q=el("blockquote","say");q.append(el("p",null,s[2]));const c=el("cite",null,s[0]);c.append(el("span",null,s[1]));q.append(c);$("#sayings").append(q);});
+TILES.forEach(t=>{const a=el("a","tile");a.href=t[2];a.target="_blank";a.rel="noopener noreferrer";a.append(el("b",null,t[0]),el("span",null,t[1]));$("#tiles").append(a);});
+SOURCES.forEach(s=>{const li=el("li");const a=el("a",null,s[0]);a.href=s[2];a.target="_blank";a.rel="noopener noreferrer";li.append(a,el("small",null,s[1]));$("#src-list").append(li);});
+
+/* 모바일 메뉴 */
+$("#burger").addEventListener("click",()=>{const o=$("#gnb").classList.toggle("open");$("#burger").setAttribute("aria-expanded",o);});
+document.querySelectorAll("#gnb a").forEach(a=>a.addEventListener("click",()=>$("#gnb").classList.remove("open")));
+
+/* 검색 */
+const INDEX=[
+ ...LIFE.concat(PROSECUTOR,POLITICS).map(r=>({cat:"발자취",title:r[0]+" "+r[1],body:r[2]})),
+ ...POLICIES.map(p=>({cat:"국정",title:p[1],body:p[2]})),
+ ...EVALS.map(e=>({cat:"국정",title:e[0]+" (평가)",body:"지지: "+e[1]+" 비판: "+e[2]})),
+ ...RECORDS.map(r=>({cat:"기록관",title:r[0]+" "+r[1],body:r[2]})),
+ ...SAYINGS.map(s=>({cat:"어록",title:s[0],body:s[2]}))
+];
+let cat="전체";
+["전체","발자취","국정","기록관","어록"].forEach(c=>{const b=el("button",null,c);b.type="button";b.setAttribute("aria-pressed",c===cat);
+  b.addEventListener("click",()=>{cat=c;document.querySelectorAll("#chips button").forEach(x=>x.setAttribute("aria-pressed",x.textContent===c));runSearch();});$("#chips").append(b);});
+function runSearch(){
+  const q=$("#q").value.trim();const box=$("#results");box.replaceChildren();if(!q)return;
+  const hits=INDEX.filter(x=>(cat==="전체"||x.cat===cat)&&(x.title.includes(q)||x.body.includes(q)));
+  box.append(el("p","cnt",`'${q}' 검색 결과 ${hits.length}건`));
+  if(!hits.length){box.append(el("p","cnt","일치하는 기록이 없습니다. 다른 키워드로 검색하거나 분류를 '전체'로 바꿔 보세요."));return;}
+  hits.forEach(h=>{const d=el("div","r");d.append(el("span",null,h.cat),el("b",null,h.title),el("p",null,h.body));box.append(d);});
+}
+$("#sform").addEventListener("submit",e=>{e.preventDefault();runSearch();});
+
+/* ───── 이미지 슬롯: images 폴더 → 위키미디어 → 대체 화면 순서로 시도 ───── */
+document.querySelectorAll(".slot[data-slot]").forEach(s=>{
+  const key=s.dataset.slot,img=s.querySelector("img");
+  const credit=document.getElementById(key+"-credit");
+  const tries=["images/"+key+".jpg"];
+  if(WIKI[key].src)tries.push(WIKI[key].src);
+  let i=0;
+  img.addEventListener("load",()=>{s.classList.add("has-img");if(credit)credit.textContent=WIKI[key].credit||"출처: Wikimedia Commons";});
+  img.addEventListener("error",()=>{i++;if(i<tries.length)img.src=tries[i];else{s.classList.remove("has-img");img.removeAttribute("src");if(credit)credit.textContent="";}});
+  img.src=tries[0];
+});
+
+/* ───── 참여마당 (Supabase 저장) ─────
+   Supabase 대시보드 > Project Settings > API 에서 복사해 붙여넣으세요.
+   anon key는 공개용 키라서 코드에 넣어도 됩니다. (service_role 키는 절대 넣지 마세요) */
+const SUPABASE_URL="";       // 예: https://abcdefgh.supabase.co
+const SUPABASE_ANON_KEY="";  // 예: eyJhbGciOi... 로 시작하는 긴 문자열
+
+const PAGE=30;
+let posts=[],hasMore=false,lastSent=0;
+const state=$("#board-state");
+const fName=$("#f-name"),fPw=$("#f-pw"),fBody=$("#f-body"),fErr=$("#f-err"),fBtn=$("#f-submit");
+
+async function rpc(fn,args){
+  const res=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/rest/v1/rpc/"+fn,{
+    method:"POST",
+    headers:{"Content-Type":"application/json",apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY},
+    body:JSON.stringify(args)
+  });
+  if(!res.ok){let m="";try{m=(await res.json()).message||"";}catch(e){}throw new Error(m||("HTTP "+res.status));}
+  return res.json();
+}
+function fmt(ts){const d=new Date(ts);const p=n=>String(n).padStart(2,"0");return `${d.getFullYear()}.${p(d.getMonth()+1)}.${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;}
+
+function renderPosts(){
+  const list=$("#p-list");list.replaceChildren();
+  $("#p-count").textContent=`글 ${posts.length}${hasMore?"+":""}건`;
+  if(!posts.length){list.append(el("p","empty","아직 등록된 글이 없습니다. 첫 의견을 남겨보세요."));return;}
+  posts.forEach(p=>{
+    const a=el("article","post"),m=el("div","meta");
+    const del=el("button","del","삭제");del.type="button";del.addEventListener("click",()=>openDel(a,p));
+    m.append(el("span","no",String(p.id)),el("b",null,p.name),el("time",null,fmt(p.created_at)),del);
+    a.append(m,el("p","body",p.body));list.append(a);
+  });
+  if(hasMore){const more=el("button","more","이전 글 더 보기");more.type="button";more.addEventListener("click",()=>load(true));list.append(more);}
+}
+async function load(append){
+  try{
+    const before=append&&posts.length?posts[posts.length-1].id:null;
+    const rows=await rpc("list_posts",{lim:PAGE+1,before_id:before});
+    hasMore=rows.length>PAGE;
+    const page=rows.slice(0,PAGE);
+    posts=append?posts.concat(page):page;
+    state.textContent="등록한 글은 저장되어 모든 방문자에게 공개됩니다.";
+    renderPosts();
+  }catch(e){state.textContent="게시판을 불러오지 못했습니다. 잠시 후 새로 고쳐 주세요.";}
+}
+function openDel(article,p){
+  if(article.querySelector(".delbox"))return;
+  const box=el("div","delbox"),pw=el("input"),ok=el("button","btn sm","삭제 확인"),no=el("button","btn-line","취소"),er=el("span","err");
+  pw.type="password";pw.placeholder="비밀번호";pw.setAttribute("aria-label","삭제 비밀번호");ok.type="button";no.type="button";
+  box.append(pw,ok,no,er);article.append(box);pw.focus();
+  no.addEventListener("click",()=>box.remove());
+  const go=async()=>{
+    ok.disabled=true;er.textContent="";
+    try{
+      const done=await rpc("delete_post",{p_id:p.id,p_pw:pw.value});
+      if(done){posts=posts.filter(x=>x.id!==p.id);renderPosts();}
+      else{er.textContent="비밀번호가 일치하지 않습니다.";ok.disabled=false;}
+    }catch(e){er.textContent="삭제하지 못했습니다. 잠시 후 다시 시도하세요.";ok.disabled=false;}
+  };
+  ok.addEventListener("click",go);pw.addEventListener("keydown",e=>{if(e.key==="Enter")go();});
+}
+fBody.addEventListener("input",()=>{$("#f-len").textContent=fBody.value.length+"/500";});
+fBtn.addEventListener("click",async()=>{
+  const name=fName.value.trim(),pw=fPw.value,body=fBody.value.trim();
+  if($("#f-hp").value)return;                       // 자동 등록 봇 차단
+  if(!name)return void(fErr.textContent="작성자 이름을 입력하세요.");
+  if(pw.length<4)return void(fErr.textContent="비밀번호를 4자 이상 입력하세요.");
+  if(!body)return void(fErr.textContent="내용을 입력하세요.");
+  if(Date.now()-lastSent<15000)return void(fErr.textContent="15초 후에 다시 등록할 수 있습니다.");
+  fBtn.disabled=true;fErr.textContent="";
+  try{
+    await rpc("add_post",{p_name:name,p_pw:pw,p_body:body});
+    lastSent=Date.now();
+    fName.value="";fPw.value="";fBody.value="";$("#f-len").textContent="0/500";
+    await load(false);
+  }catch(e){fErr.textContent="등록하지 못했습니다. 잠시 후 다시 시도하세요.";}
+  finally{fBtn.disabled=false;}
+});
+
+if(!SUPABASE_URL||!SUPABASE_ANON_KEY){
+  state.textContent="게시판이 아직 준비 중입니다.";
+  $("#form").style.display="none";renderPosts();
+}else{load(false);}
+})();
+</script>
+</body>
+</html>
